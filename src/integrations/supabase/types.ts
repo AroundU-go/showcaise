@@ -14,13 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      apps: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          id: string
+          logo_url: string | null
+          maker_email: string
+          name: string
+          screenshot_urls: string[] | null
+          status: string
+          tagline: string
+          updated_at: string
+          vote_count: number
+          website_url: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          id?: string
+          logo_url?: string | null
+          maker_email: string
+          name: string
+          screenshot_urls?: string[] | null
+          status?: string
+          tagline: string
+          updated_at?: string
+          vote_count?: number
+          website_url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          logo_url?: string | null
+          maker_email?: string
+          name?: string
+          screenshot_urls?: string[] | null
+          status?: string
+          tagline?: string
+          updated_at?: string
+          vote_count?: number
+          website_url?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_admin: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_admin?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_admin?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      votes: {
+        Row: {
+          app_id: string
+          created_at: string
+          id: string
+          ip_address: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          id?: string
+          ip_address: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          id?: string
+          ip_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "votes_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_vote_count: {
+        Args: { app_uuid: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
