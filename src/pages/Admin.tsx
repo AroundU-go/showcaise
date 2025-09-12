@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, ExternalLink, Loader2, Eye } from "lucide-react";
+import { Check, X, ExternalLink, Loader2, Eye, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { AdminLogin } from "@/components/AdminLogin";
 
 interface PendingApp {
   id: string;
@@ -25,6 +27,20 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [processingApps, setProcessingApps] = useState<Set<string>>(new Set());
   const { toast } = useToast();
+  const { user, isAdmin, loading: authLoading, signOut } = useAuth();
+
+  // Show login screen if not authenticated or not admin
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-subtle flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
+    return <AdminLogin />;
+  }
 
   useEffect(() => {
     fetchPendingApps();
@@ -191,21 +207,35 @@ export default function Admin() {
     </Card>
   );
 
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out",
+      description: "You have been signed out successfully.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-subtle">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            Admin{" "}
-            <span className="bg-gradient-hero bg-clip-text text-transparent">
-              Panel
-            </span>
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Review and manage app submissions
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              Admin{" "}
+              <span className="bg-gradient-hero bg-clip-text text-transparent">
+                Panel
+              </span>
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              Review and manage app submissions
+            </p>
+          </div>
+          <Button variant="outline" onClick={handleSignOut}>
+            <LogOut className="w-4 h-4 mr-2" />
+            Sign Out
+          </Button>
         </div>
 
         {loading ? (
