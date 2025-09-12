@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Plus, Sparkles, Shield } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import showcaiseLogo from "@/assets/showcaise-logo.png";
 
 export const Header = () => {
   return (
@@ -8,12 +9,14 @@ export const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
+          <Link to="/" className="flex items-center gap-3 group">
+            <img 
+              src={showcaiseLogo} 
+              alt="ShowCaise" 
+              className="w-8 h-8 object-contain"
+            />
             <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              AI Showcase
+              ShowCaise
             </span>
           </Link>
 
@@ -35,12 +38,6 @@ export const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <Link to="/admin">
-              <Button variant="ghost" size="sm" className="hidden md:flex">
-                <Shield className="w-4 h-4 mr-2" />
-                Admin
-              </Button>
-            </Link>
             <Link to="/submit">
               <Button className="bg-gradient-primary hover:shadow-glow transition-all">
                 <Plus className="w-4 h-4 mr-2" />
