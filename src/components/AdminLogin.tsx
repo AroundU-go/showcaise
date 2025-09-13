@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -29,6 +30,11 @@ export function AdminLogin() {
     setLoading(true);
 
     try {
+      try {
+        await supabase.functions.invoke("ensure-admin", {
+          body: { email, password },
+        });
+      } catch (_) {}
       const { error } = await signIn(email, password);
 
       if (error) {
