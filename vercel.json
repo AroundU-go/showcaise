@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/admin",
-      "destination": "https://preview--ai-showcase-spot.lovable.app/admin"
+      "destination": "https://ai-showcase-spot.lovable.app/admin"
     }
   ]
 }
