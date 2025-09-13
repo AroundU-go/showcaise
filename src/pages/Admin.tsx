@@ -29,6 +29,13 @@ export default function Admin() {
   const { toast } = useToast();
   const { user, isAdmin, loading: authLoading, signOut } = useAuth();
 
+  useEffect(() => {
+    console.log("Admin component mounted, user:", user, "isAdmin:", isAdmin);
+    if (user && isAdmin) {
+      fetchPendingApps();
+    }
+  }, [user, isAdmin]);
+
   // Show login screen if not authenticated or not admin
   if (authLoading) {
     return (
@@ -41,10 +48,6 @@ export default function Admin() {
   if (!user || !isAdmin) {
     return <AdminLogin />;
   }
-
-  useEffect(() => {
-    fetchPendingApps();
-  }, []);
 
   const fetchPendingApps = async () => {
     try {
