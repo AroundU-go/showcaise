@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/admin",
-      "destination": "https://ai-showcase-spot.lovable.app/admin"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
