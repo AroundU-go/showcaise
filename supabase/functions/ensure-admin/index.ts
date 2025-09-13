@@ -5,15 +5,35 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
 serve(async (req) => {
+  // Handle CORS preflight
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  const jsonHeaders = { "Content-Type": "application/json", ...corsHeaders };
+
   try {
+    if (req.method !== "POST") {
+      return new Response(JSON.stringify({ ok: false, error: "Method not allowed" }), {
+        status: 405,
+        headers: jsonHeaders,
+      });
+    }
+
     const { email, password } = await req.json();
     const allowedEmail = "go.aroundu@gmail.com";
 
     // Only operate for the configured admin email
     if (!email || email !== allowedEmail) {
       return new Response(JSON.stringify({ ok: true, skipped: true }), {
-        headers: { "Content-Type": "application/json" },
+        headers: jsonHeaders,
       });
     }
 
@@ -23,7 +43,7 @@ serve(async (req) => {
     if (!supabaseUrl || !serviceRoleKey) {
       return new Response(JSON.stringify({ ok: false, error: "Missing server configuration" }), {
         status: 500,
-        headers: { "Content-Type": "application/json" },
+        headers: jsonHeaders,
       });
     }
 
@@ -37,12 +57,14 @@ serve(async (req) => {
       user_metadata: { is_admin: true },
     });
 
-    if (createErr && !String(createErr.message || "").toLowerCase().includes("exists")) {
-      // Non-existence errors: return info but do not fail the flow
-      console.warn("ensure-admin createUser error:", createErr.message);
+    if (createErr) {
+      const msg = String(createErr.message || "").toLowerCase();
+      if (!msg.includes("exists")) {
+        console.warn("ensure-admin createUser error:", createErr.message);
+      }
     }
 
-    // Ensure profile has is_admin=true
+    // Ensure profile has is_admin=true and, if user exists, make sure password is updated
     const userId = created?.user?.id;
 
     if (userId) {
@@ -50,6 +72,7 @@ serve(async (req) => {
         .from("profiles")
         .upsert({ user_id: userId, email: allowedEmail, is_admin: true }, { onConflict: "user_id" });
     } else {
+      // If the user already exists, try to locate them via profiles to update password and admin flag
       const { data: profile } = await adminClient
         .from("profiles")
         .select("user_id")
@@ -57,21 +80,30 @@ serve(async (req) => {
         .maybeSingle();
 
       if (profile?.user_id) {
+        try {
+          await adminClient.auth.admin.updateUserById(profile.user_id, {
+            password,
+            email_confirm: true,
+            user_metadata: { is_admin: true },
+          });
+        } catch (e) {
+          console.warn("ensure-admin updateUserById error:", e?.message || e);
+        }
+
         await adminClient
           .from("profiles")
-          .update({ is_admin: true })
-          .eq("user_id", profile.user_id);
+          .upsert({ user_id: profile.user_id, email: allowedEmail, is_admin: true }, { onConflict: "user_id" });
       }
     }
 
     return new Response(JSON.stringify({ ok: true }), {
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders,
     });
   } catch (e) {
     console.error("ensure-admin error:", e);
     return new Response(JSON.stringify({ ok: false, error: e?.message || "unknown" }), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders,
     });
   }
 });

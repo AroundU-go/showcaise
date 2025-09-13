@@ -2,3 +2,6 @@ project_id = "uxwamuzhcggvtoweyjnw"
 
 [functions.populate-sample-data]
 verify_jwt = false
+
+[functions.ensure-admin]
+verify_jwt = false
