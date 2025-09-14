@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import SubmitApp from "./pages/SubmitApp";
 import AppDetail from "./pages/AppDetail";
 import Admin from "./pages/Admin";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +26,8 @@ const App = () => (
             <Route path="/submit" element={<SubmitApp />} />
             <Route path="/app/:id" element={<AppDetail />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
