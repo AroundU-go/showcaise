@@ -151,13 +151,8 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/10" />
           <div className="relative z-10 max-w-4xl mx-auto px-4">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              App Directory
+              Ai Apps Directory
               <br />
-              <span className="text-4xl md:text-5xl">
-                On{" "}
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  Auto-Pilot
-                </span>
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
