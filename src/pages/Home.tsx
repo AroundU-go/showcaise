@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { SearchBar } from "@/components/SearchBar";
 import { AppCard } from "@/components/AppCard";
 import { useToast } from "@/hooks/use-toast";
+import { Footer } from "@/components/Footer";
 import { Loader2 } from "lucide-react";
 
 interface App {
@@ -146,23 +147,32 @@ export default function Home() {
       
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <div className="relative text-center mb-12 py-20 rounded-2xl overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-            style={{ backgroundImage: "url('/src/assets/hero-bg.jpg')" }}
-          />
-          <div className="absolute inset-0 bg-gradient-hero opacity-10" />
-          <div className="relative z-10">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Discover Amazing{" "}
-              <span className="bg-gradient-hero bg-clip-text text-transparent">
-                AI Apps
+        <div className="relative text-center mb-16 py-24 rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-background">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/10" />
+          <div className="relative z-10 max-w-4xl mx-auto px-4">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              App Directory
+              <br />
+              <span className="text-4xl md:text-5xl">
+                On{" "}
+                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  Auto-Pilot
+                </span>
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              The best place to discover and share AI-powered applications.
-              Vote for your favorites and help others find great tools.
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+              🔍 Find and ⚡ Discover amazing apps in your niche
+              <br />
+              — get 100's of new discoveries while you sleep
             </p>
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <div className="flex -space-x-2">
+                <div className="w-8 h-8 rounded-full bg-primary border-2 border-background"></div>
+                <div className="w-8 h-8 rounded-full bg-accent border-2 border-background"></div>
+                <div className="w-8 h-8 rounded-full bg-secondary border-2 border-background"></div>
+              </div>
+              <span className="text-sm text-muted-foreground ml-2">Join 350+</span>
+            </div>
           </div>
         </div>
 
@@ -202,6 +212,8 @@ export default function Home() {
           </div>
         )}
       </main>
+      
+      <Footer />
     </div>
   );
 }

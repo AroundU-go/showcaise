@@ -55,16 +55,16 @@ export default function Admin() {
       const { data, error } = await supabase
         .from("apps")
         .select("*")
-        .eq("status", "pending")
+        .in("status", ["pending", "approved"])
         .order("created_at", { ascending: true });
 
       if (error) throw error;
       setPendingApps(data || []);
     } catch (error) {
-      console.error("Error fetching pending apps:", error);
+      console.error("Error fetching apps:", error);
       toast({
         title: "Error",
-        description: "Failed to load pending apps.",
+        description: "Failed to load apps.",
         variant: "destructive",
       });
     } finally {
@@ -96,6 +96,41 @@ export default function Admin() {
       toast({
         title: "Error",
         description: `Failed to ${status} the app. Please try again.`,
+        variant: "destructive",
+      });
+    } finally {
+      setProcessingApps(prev => {
+        const next = new Set(prev);
+        next.delete(appId);
+        return next;
+      });
+    }
+  };
+
+  const deleteApp = async (appId: string) => {
+    if (processingApps.has(appId)) return;
+
+    setProcessingApps(prev => new Set(prev).add(appId));
+
+    try {
+      const { error } = await supabase
+        .from("apps")
+        .delete()
+        .eq("id", appId);
+
+      if (error) throw error;
+
+      setPendingApps(prev => prev.filter(app => app.id !== appId));
+
+      toast({
+        title: "App deleted",
+        description: "The app has been deleted successfully.",
+      });
+    } catch (error) {
+      console.error("Error deleting app:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete the app. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -173,38 +208,59 @@ export default function Admin() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border">
-          <Button
-            size="sm"
-            onClick={() => updateAppStatus(app.id, "approved")}
-            disabled={processingApps.has(app.id)}
-            className="bg-green-600 hover:bg-green-700 text-white flex-1"
-          >
-            {processingApps.has(app.id) ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <>
-                <Check className="w-4 h-4 mr-1" />
-                Approve
-              </>
-            )}
-          </Button>
-          
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => updateAppStatus(app.id, "rejected")}
-            disabled={processingApps.has(app.id)}
-            className="flex-1"
-          >
-            {processingApps.has(app.id) ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <>
-                <X className="w-4 h-4 mr-1" />
-                Reject
-              </>
-            )}
-          </Button>
+          {app.status === "pending" ? (
+            <>
+              <Button
+                size="sm"
+                onClick={() => updateAppStatus(app.id, "approved")}
+                disabled={processingApps.has(app.id)}
+                className="bg-green-600 hover:bg-green-700 text-white flex-1"
+              >
+                {processingApps.has(app.id) ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <Check className="w-4 h-4 mr-1" />
+                    Approve
+                  </>
+                )}
+              </Button>
+              
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => updateAppStatus(app.id, "rejected")}
+                disabled={processingApps.has(app.id)}
+                className="flex-1"
+              >
+                {processingApps.has(app.id) ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <X className="w-4 h-4 mr-1" />
+                    Reject
+                  </>
+                )}
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => deleteApp(app.id)}
+              disabled={processingApps.has(app.id)}
+              className="w-full"
+            >
+              {processingApps.has(app.id) ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <>
+                  <X className="w-4 h-4 mr-1" />
+                  Delete App
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -260,7 +316,7 @@ export default function Admin() {
           <>
             <div className="mb-6">
               <h2 className="text-xl font-semibold">
-                Pending Apps ({pendingApps.length})
+                All Apps ({pendingApps.length})
               </h2>
             </div>
             

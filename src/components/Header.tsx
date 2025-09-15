@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Plus, User, LogOut, Settings, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import showcaiseLogoIcon from "@/assets/showcaise-logo-icon.png";
+import newLogo from "@/assets/new-logo.png";
 
 export const Header = () => {
   const { user, signOut } = useAuth();
@@ -19,9 +19,9 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <img 
-              src={showcaiseLogoIcon} 
-              alt="ShowCaise" 
-              className="w-8 h-8 object-contain"
+              src={newLogo} 
+              alt="Showcaise" 
+              className="h-10 w-auto"
             />
             <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               ShowCaise

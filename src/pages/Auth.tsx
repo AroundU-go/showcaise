@@ -7,7 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
-import showcaiseLogoIcon from "@/assets/showcaise-logo-icon.png";
+import { supabase } from "@/integrations/supabase/client";
+import newLogo from "@/assets/new-logo.png";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +16,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -24,7 +26,18 @@ export default function Auth() {
     setLoading(true);
 
     try {
-      if (isLogin) {
+      if (showForgotPassword) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth`,
+        });
+        if (error) throw error;
+        
+        toast({
+          title: "Password reset email sent!",
+          description: "Check your email for a password reset link.",
+        });
+        setShowForgotPassword(false);
+      } else if (isLogin) {
         const { error } = await signIn(email, password);
         if (error) {
           toast({
@@ -40,7 +53,6 @@ export default function Auth() {
           navigate("/dashboard");
         }
       } else {
-        // For signup, use the signUp method
         const { error } = await signUp(email, password);
         if (error) {
           toast({
@@ -55,10 +67,10 @@ export default function Auth() {
           });
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        description: error.message || "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -77,27 +89,35 @@ export default function Auth() {
           </Link>
           <div className="flex items-center justify-center gap-3 mb-2">
             <img 
-              src={showcaiseLogoIcon} 
-              alt="ShowCaise Logo" 
-              className="w-8 h-8 object-contain"
+              src={newLogo} 
+              alt="Showcaise Logo" 
+              className="h-12 object-contain"
             />
             <span className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               ShowCaise
             </span>
           </div>
           <p className="text-muted-foreground">
-            {isLogin ? "Welcome back! Sign in to your account." : "Create your account to submit and manage apps."}
+            {showForgotPassword 
+              ? "Enter your email to reset your password" 
+              : (isLogin ? "Welcome back! Sign in to your account." : "Create your account to submit and manage apps.")
+            }
           </p>
         </div>
 
         {/* Auth Card */}
         <Card className="shadow-card-hover">
           <CardHeader className="text-center">
-            <CardTitle>{isLogin ? "Sign In" : "Create Account"}</CardTitle>
+            <CardTitle>
+              {showForgotPassword ? "Reset Password" : (isLogin ? "Sign In" : "Create Account")}
+            </CardTitle>
             <CardDescription>
-              {isLogin 
-                ? "Enter your credentials to access your dashboard" 
-                : "Join ShowCaise to showcase your apps"
+              {showForgotPassword 
+                ? "We'll send you a password reset link"
+                : (isLogin 
+                  ? "Enter your credentials to access your dashboard" 
+                  : "Join ShowCaise to showcase your apps"
+                )
               }
             </CardDescription>
           </CardHeader>
@@ -115,33 +135,35 @@ export default function Auth() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={6}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </Button>
+              {!showForgotPassword && (
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      minLength={6}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <Button 
                 type="submit" 
@@ -151,25 +173,45 @@ export default function Auth() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    {isLogin ? "Signing in..." : "Creating account..."}
+                    {showForgotPassword ? "Sending..." : (isLogin ? "Signing in..." : "Creating account...")}
                   </>
                 ) : (
-                  isLogin ? "Sign In" : "Create Account"
+                  showForgotPassword ? "Send Reset Email" : (isLogin ? "Sign In" : "Create Account")
                 )}
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
-              <Button
-                variant="link"
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {isLogin 
-                  ? "Don't have an account? Sign up" 
-                  : "Already have an account? Sign in"
-                }
-              </Button>
+            <div className="mt-6 text-center space-y-2">
+              {isLogin && !showForgotPassword && (
+                <Button
+                  variant="link"
+                  onClick={() => setShowForgotPassword(true)}
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                >
+                  Forgot your password?
+                </Button>
+              )}
+              
+              {showForgotPassword ? (
+                <Button
+                  variant="link"
+                  onClick={() => setShowForgotPassword(false)}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  Back to sign in
+                </Button>
+              ) : (
+                <Button
+                  variant="link"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  {isLogin 
+                    ? "Don't have an account? Sign up" 
+                    : "Already have an account? Sign in"
+                  }
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
