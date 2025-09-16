@@ -22,6 +22,11 @@ interface App {
   created_at: string;
 }
 
+interface VoteResponse {
+  success: boolean;
+  message: string;
+}
+
 export default function Home() {
   const [apps, setApps] = useState<App[]>([]);
   const [loading, setLoading] = useState(true);
@@ -89,46 +94,42 @@ export default function Home() {
     setVotingApps(prev => new Set(prev).add(appId));
 
     try {
-      // Get user's IP address (simplified - in production you'd want a more robust solution)
+      // Get user's IP address
       const ipResponse = await fetch("https://api.ipify.org?format=json");
       const { ip } = await ipResponse.json();
 
-      // Check if user already voted
-      const { data: existingVote } = await supabase
-        .from("votes")
-        .select("id")
-        .eq("app_id", appId)
-        .eq("ip_address", ip)
-        .single();
-
-      if (existingVote) {
-        toast({
-          title: "Already voted",
-          description: "You've already voted for this app!",
+      // Use secure function to add vote
+      const { data, error } = await supabase
+        .rpc('add_vote_if_new', {
+          app_uuid: appId,
+          user_ip: ip
         });
-        return;
-      }
-
-      // Add vote
-      const { error } = await supabase
-        .from("votes")
-        .insert({ app_id: appId, ip_address: ip });
 
       if (error) throw error;
 
-      // Update local state
-      setApps(prev => 
-        prev.map(app => 
-          app.id === appId 
-            ? { ...app, vote_count: app.vote_count + 1 }
-            : app
-        )
-      );
+      const voteResult = data as unknown as VoteResponse;
 
-      toast({
-        title: "Vote added!",
-        description: "Thanks for voting!",
-      });
+      if (voteResult.success) {
+        // Update local state
+        setApps(prev => 
+          prev.map(app => 
+            app.id === appId 
+              ? { ...app, vote_count: app.vote_count + 1 }
+              : app
+          )
+        );
+
+        toast({
+          title: "Vote added!",
+          description: "Thanks for voting!",
+        });
+      } else {
+        // Already voted
+        toast({
+          title: "Already voted",
+          description: voteResult.message,
+        });
+      }
     } catch (error) {
       console.error("Error voting:", error);
       toast({
