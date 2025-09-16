@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Plus, User, LogOut, Settings, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import newLogo from "@/assets/new-logo.png";
+import newLogo from "@/assets/logo-updated.png";
 
 export const Header = () => {
   const { user, signOut } = useAuth();
@@ -23,7 +23,7 @@ export const Header = () => {
               alt="Showcaise" 
               className="h-10 w-auto"
             />
-            <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+            <span className="text-lg sm:text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               ShowCaise
             </span>
           </Link>

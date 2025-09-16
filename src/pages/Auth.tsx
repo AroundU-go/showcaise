@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import newLogo from "@/assets/new-logo.png";
+import newLogo from "@/assets/logo-updated.png";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -93,7 +93,7 @@ export default function Auth() {
               alt="Showcaise Logo" 
               className="h-12 object-contain"
             />
-            <span className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               ShowCaise
             </span>
           </div>

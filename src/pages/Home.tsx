@@ -152,22 +152,12 @@ export default function Home() {
           <div className="relative z-10 max-w-4xl mx-auto px-4">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Ai Apps Directory
-              <br />
-              </span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
               🔍 Find and ⚡ Discover amazing apps in your niche
               <br />
               — get 100's of new discoveries while you sleep
             </p>
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <div className="flex -space-x-2">
-                <div className="w-8 h-8 rounded-full bg-primary border-2 border-background"></div>
-                <div className="w-8 h-8 rounded-full bg-accent border-2 border-background"></div>
-                <div className="w-8 h-8 rounded-full bg-secondary border-2 border-background"></div>
-              </div>
-              <span className="text-sm text-muted-foreground ml-2">Join 350+</span>
-            </div>
           </div>
         </div>
 
