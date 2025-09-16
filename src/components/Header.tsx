@@ -78,7 +78,7 @@ export const Header = () => {
               </>
             ) : (
               <>
-                <Link to="/auth">
+                <Link to="/auth" className="hidden md:block">
                   <Button variant="outline">
                     Sign In
                   </Button>

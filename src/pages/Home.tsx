@@ -6,6 +6,9 @@ import { AppCard } from "@/components/AppCard";
 import { useToast } from "@/hooks/use-toast";
 import { Footer } from "@/components/Footer";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface App {
   id: string;
@@ -27,6 +30,7 @@ export default function Home() {
   const [category, setCategory] = useState("All Categories");
   const [votingApps, setVotingApps] = useState<Set<string>>(new Set());
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Fetch apps
   useEffect(() => {
@@ -158,6 +162,16 @@ export default function Home() {
               <br />
               — get 100's of new discoveries while you sleep
             </p>
+            {/* Sign in button for small devices only when not logged in */}
+            {!user && (
+              <div className="md:hidden flex justify-center">
+                <Link to="/auth">
+                  <Button variant="outline" className="px-6 py-2">
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 
