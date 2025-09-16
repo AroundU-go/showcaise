@@ -147,6 +147,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_vote_if_new: {
+        Args: { app_uuid: string; user_ip: string }
+        Returns: Json
+      }
+      has_ip_voted_for_app: {
+        Args: { app_uuid: string; user_ip: string }
+        Returns: boolean
+      }
       increment_vote_count: {
         Args: { app_uuid: string }
         Returns: undefined
