@@ -33,10 +33,10 @@ export const AppCard = ({ app, onVote, isVoting }: AppCardProps) => {
               <img
                 src={app.logo_url}
                 alt={`${app.name} logo`}
-                className="w-16 h-16 rounded-xl object-cover border border-border"
+                className="w-24 h-24 rounded-xl object-cover border border-border"
               />
             ) : (
-              <div className="w-16 h-16 rounded-xl bg-gradient-primary flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-24 h-24 rounded-xl bg-gradient-primary flex items-center justify-center text-white font-bold text-2xl">
                 {app.name.charAt(0)}
               </div>
             )}
