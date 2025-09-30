@@ -37,7 +37,7 @@ export const Header = () => {
               Discover
             </Link>
             <Link
-                   to="/blog"
+              to="/blog"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               Blog
