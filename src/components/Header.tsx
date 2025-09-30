@@ -37,6 +37,12 @@ export const Header = () => {
               Discover
             </Link>
             <Link
+                   to="/blog"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Blog
+            </Link>
+            <Link
               to="/submit"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
