@@ -29,7 +29,7 @@ export const Header = () => {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-8">
             <Link
               to="/"
               className="text-foreground hover:text-primary transition-colors font-medium"
