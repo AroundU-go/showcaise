@@ -23,6 +23,7 @@ export type Database = {
           logo_url: string | null
           maker_email: string
           name: string
+          pinned: boolean
           screenshot_urls: string[] | null
           status: string
           tagline: string
@@ -38,6 +39,7 @@ export type Database = {
           logo_url?: string | null
           maker_email: string
           name: string
+          pinned?: boolean
           screenshot_urls?: string[] | null
           status?: string
           tagline: string
@@ -53,12 +55,52 @@ export type Database = {
           logo_url?: string | null
           maker_email?: string
           name?: string
+          pinned?: boolean
           screenshot_urls?: string[] | null
           status?: string
           tagline?: string
           updated_at?: string
           vote_count?: number
           website_url?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author_email: string
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          published_at: string | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_email: string
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published_at?: string | null
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_email?: string
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published_at?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

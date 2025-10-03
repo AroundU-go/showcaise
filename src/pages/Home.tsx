@@ -20,6 +20,7 @@ interface App {
   category: string;
   vote_count: number;
   created_at: string;
+  pinned: boolean;
 }
 
 interface VoteResponse {
@@ -60,11 +61,11 @@ export default function Home() {
         query = query.or(`name.ilike.%${searchQuery}%,tagline.ilike.%${searchQuery}%`);
       }
 
-      // Apply sorting
+      // Apply sorting - pinned apps always come first
       if (sortBy === "newest") {
-        query = query.order("created_at", { ascending: false });
+        query = query.order("pinned", { ascending: false }).order("created_at", { ascending: false });
       } else if (sortBy === "most-voted") {
-        query = query.order("vote_count", { ascending: false });
+        query = query.order("pinned", { ascending: false }).order("vote_count", { ascending: false });
       }
 
       const { data, error } = await query;
