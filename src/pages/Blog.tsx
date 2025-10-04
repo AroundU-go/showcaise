@@ -43,12 +43,16 @@ const Blog = () => {
   return (
     <>
       <Helmet>
-        <title>Blog - AI Apps Directory | Showcaise - Find Best AI Tools</title>
-        <meta name="description" content="Discover the latest insights about AI apps directory, AI tools directory, and find the best AI apps on Showcaise. Stay updated with AI technology trends." />
-        <meta name="keywords" content="ai apps directory, ai tools directory, showcaise, find ai apps, ai applications, artificial intelligence tools, ai marketplace, best ai apps" />
-        <meta property="og:title" content="Blog - AI Apps Directory | Showcaise" />
-        <meta property="og:description" content="Discover the latest insights about AI apps directory and find the best AI tools on Showcaise." />
+        <title>Blog - AI Apps Directory | Showcaise - Latest AI Tools & Best AI Apps</title>
+        <meta name="description" content="Discover the latest insights about AI apps directory, AI tools directory, and find the best AI tools on Showcaise. Stay updated with AI technology trends, latest AI applications, and the best AI apps marketplace." />
+        <meta name="keywords" content="ai apps directory, ai tools directory, latest ai tools, best ai tools, ai apps marketplace, showcaise, find ai apps, ai applications, artificial intelligence tools, top ai tools, ai technology trends, ai blog" />
+        <meta property="og:title" content="Blog - AI Apps Directory | Showcaise - Latest AI Tools" />
+        <meta property="og:description" content="Discover the latest insights about AI apps directory and find the best AI tools on Showcaise. Stay updated with trends in the AI apps marketplace." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://showcaise.com/blog" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Blog - AI Apps Directory | Showcaise" />
+        <meta name="twitter:description" content="Latest insights about AI tools directory and best AI apps marketplace." />
         <link rel="canonical" href="https://showcaise.com/blog" />
       </Helmet>
       

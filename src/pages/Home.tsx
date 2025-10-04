@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 interface App {
   id: string;
@@ -148,8 +149,23 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      <Header />
+    <>
+      <Helmet>
+        <title>Showcaise - AI Apps Directory | Discover Best AI Tools & Latest AI Applications</title>
+        <meta name="description" content="Discover the best AI tools and latest AI applications in Showcaise, the leading AI apps directory and marketplace. Find top AI tools, compare AI apps, and explore the latest innovations in artificial intelligence." />
+        <meta name="keywords" content="ai apps directory, ai tools directory, latest ai tools, best ai tools, ai apps marketplace, showcaise, find ai apps, ai applications, artificial intelligence tools, top ai tools, ai app store, discover ai tools" />
+        <meta property="og:title" content="Showcaise - AI Apps Directory | Discover Best AI Tools" />
+        <meta property="og:description" content="Find and discover the best AI tools and latest AI applications. Showcaise is your go-to AI apps directory and marketplace." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://showcaise.com" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Showcaise - AI Apps Directory | Discover Best AI Tools" />
+        <meta name="twitter:description" content="Find and discover the best AI tools and latest AI applications in one place." />
+        <link rel="canonical" href="https://showcaise.com" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-gradient-subtle">
+        <Header />
       
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
@@ -214,7 +230,8 @@ export default function Home() {
         )}
       </main>
       
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 }
