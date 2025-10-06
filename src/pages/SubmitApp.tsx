@@ -152,6 +152,22 @@ export default function SubmitApp() {
 
       if (error) throw error;
 
+      // Send email notification to admin
+      try {
+        await supabase.functions.invoke("notify-new-app", {
+          body: {
+            appName: formData.name,
+            appTagline: formData.tagline,
+            appCategory: formData.category,
+            makerEmail: formData.maker_email,
+            websiteUrl: formData.website_url,
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send notification email:", emailError);
+        // Don't fail the submission if email fails
+      }
+
       toast({
         title: "App submitted!",
         description: "Your app has been submitted for review. We'll notify you once it's approved.",
