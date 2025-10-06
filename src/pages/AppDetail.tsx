@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, ExternalLink, Globe, Loader2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Globe, Loader2, Share2 } from "lucide-react";
 
 interface App {
   id: string;
@@ -116,6 +116,23 @@ export default function AppDetail() {
       });
     } finally {
       setVoting(false);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Link copied!",
+        description: "Share this app with others",
+      });
+    } catch (error) {
+      console.error("Error copying link:", error);
+      toast({
+        title: "Error",
+        description: "Failed to copy link",
+        variant: "destructive",
+      });
     }
   };
 
@@ -272,6 +289,15 @@ export default function AppDetail() {
                       Try It Now
                     </Button>
                   </a>
+                  
+                  <Button
+                    onClick={handleShare}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    <Share2 className="w-4 h-4 mr-2" />
+                    Share
+                  </Button>
                   
                   <VoteButton
                     voteCount={app.vote_count}
