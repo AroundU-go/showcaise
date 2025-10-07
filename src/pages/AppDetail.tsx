@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, ExternalLink, Globe, Loader2, Share2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { AuthModal } from "@/components/AuthModal";
 
 interface App {
   id: string;
@@ -27,7 +29,9 @@ export default function AppDetail() {
   const [app, setApp] = useState<App | null>(null);
   const [loading, setLoading] = useState(true);
   const [voting, setVoting] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (id) {
@@ -68,6 +72,12 @@ export default function AppDetail() {
   };
 
   const handleVote = async () => {
+    // Check if user is signed in
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+
     if (!app || voting) return;
 
     setVoting(true);
@@ -332,6 +342,12 @@ export default function AppDetail() {
           </div>
         </div>
       </main>
+
+      <AuthModal 
+        open={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleVote}
+      />
     </div>
   );
 }

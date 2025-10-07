@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { AuthModal } from "@/components/AuthModal";
 
 interface App {
   id: string;
@@ -36,6 +37,8 @@ export default function Home() {
   const [sortBy, setSortBy] = useState("newest");
   const [category, setCategory] = useState("All Categories");
   const [votingApps, setVotingApps] = useState<Set<string>>(new Set());
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [pendingVoteAppId, setPendingVoteAppId] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -91,6 +94,13 @@ export default function Home() {
   }, [searchQuery, sortBy, category]);
 
   const handleVote = async (appId: string) => {
+    // Check if user is signed in
+    if (!user) {
+      setPendingVoteAppId(appId);
+      setShowAuthModal(true);
+      return;
+    }
+
     if (votingApps.has(appId)) return;
 
     setVotingApps(prev => new Set(prev).add(appId));
@@ -145,6 +155,14 @@ export default function Home() {
         next.delete(appId);
         return next;
       });
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    if (pendingVoteAppId) {
+      // Retry vote after successful auth
+      handleVote(pendingVoteAppId);
+      setPendingVoteAppId(null);
     }
   };
 
@@ -232,6 +250,12 @@ export default function Home() {
       
         <Footer />
       </div>
+
+      <AuthModal 
+        open={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+      />
     </>
   );
 }
