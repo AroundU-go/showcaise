@@ -31,27 +31,48 @@ export const Header = () => {
             </span>
           </Link>
 
-          {/* Navigation */}
-          <nav className="flex items-center gap-4 sm:gap-6 md:gap-8">
-            <Link
-              to="/"
-              className="text-foreground hover:text-primary transition-colors font-medium text-sm"
-            >
-              Discover
-            </Link>
-            <Link
-              to="/blog"
-              className="text-foreground hover:text-primary transition-colors font-medium text-sm"
-            >
-              Blog
-            </Link>
-            <Link
-              to="/submit"
-              className="text-foreground hover:text-primary transition-colors font-medium text-sm"
-            >
-              Submit App
-            </Link>
-          </nav>
+          {/* Mobile Menu */}
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-64">
+              <nav className="flex flex-col gap-4 mt-8">
+                <Link
+                  to="/"
+                  className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Discover
+                </Link>
+                <Link
+                  to="/blog"
+                  className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Blog
+                </Link>
+                <Link
+                  to="/submit"
+                  className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Submit App
+                </Link>
+                {!user && (
+                  <Link
+                    to="/auth"
+                    className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                )}
+              </nav>
+            </SheetContent>
+          </Sheet>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
