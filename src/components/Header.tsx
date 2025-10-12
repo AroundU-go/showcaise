@@ -31,6 +31,28 @@ export const Header = () => {
             </span>
           </Link>
 
+          {/* Navigation - Desktop */}
+          <nav className="hidden md:flex items-center gap-8">
+            <Link
+              to="/"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Discover
+            </Link>
+            <Link
+              to="/blog"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Blog
+            </Link>
+            <Link
+              to="/submit"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Submit App
+            </Link>
+          </nav>
+
           {/* Actions */}
           <div className="flex items-center gap-3 ml-auto">
             {user ? (
