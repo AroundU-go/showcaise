@@ -32,7 +32,7 @@ export const Header = () => {
           </Link>
 
           {/* Navigation - Desktop */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
             <Link
               to="/"
               className="text-foreground hover:text-primary transition-colors font-medium"
@@ -54,7 +54,7 @@ export const Header = () => {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-3 ml-auto">
+          <div className="flex items-center gap-3">
             {user ? (
               <>
                 <Link to="/submit" className="hidden md:block">
