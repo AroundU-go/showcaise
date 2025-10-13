@@ -8,7 +8,7 @@ import newLogo from "@/assets/logo-updated.png";
 import { useState } from "react";
 
 export const Header = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSignOut = () => {
@@ -55,7 +55,9 @@ export const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            {user ? (
+            {loading ? (
+              <div className="w-10 h-10" /> 
+            ) : user ? (
               <>
                 <Link to="/submit" className="hidden md:block">
                   <Button className="bg-gradient-primary hover:shadow-glow transition-all">
@@ -132,7 +134,7 @@ export const Header = () => {
                 >
                   Submit App
                 </Link>
-                {!user && (
+                {!loading && !user && (
                   <Link
                     to="/auth"
                     className="text-foreground hover:text-primary transition-colors font-medium py-2"
