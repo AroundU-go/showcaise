@@ -24,41 +24,48 @@ interface AppCardProps {
 
 export const AppCard = ({ app, onVote, isVoting }: AppCardProps) => {
   return (
-    <Card className="group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4">
+    <Card className="group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 relative">
+      {/* Featured Badge */}
+      <div className="absolute top-3 left-3 z-10">
+        <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
+          Featured
+        </Badge>
+      </div>
+
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 w-full sm:w-auto flex justify-center sm:block">
             {app.logo_url ? (
               <img
                 src={app.logo_url}
                 alt={`${app.name} logo`}
-                className="w-24 h-24 rounded-xl object-cover border border-border"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border border-border"
               />
             ) : (
-              <div className="w-24 h-24 rounded-xl bg-gradient-primary flex items-center justify-center text-white font-bold text-2xl">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-gradient-primary flex items-center justify-center text-white font-bold text-xl sm:text-2xl">
                 {app.name.charAt(0)}
               </div>
             )}
           </div>
 
           {/* Content */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
+          <div className="flex-1 min-w-0 w-full">
+            <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4">
+              <div className="flex-1 w-full">
                 <Link
                   to={`/app/${app.id}`}
                   className="group-hover:text-primary transition-colors"
                 >
-                  <h3 className="font-semibold text-lg mb-1 truncate">
+                  <h3 className="font-semibold text-base sm:text-lg mb-1 break-words">
                     {app.name}
                   </h3>
                 </Link>
-                <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+                <p className="text-muted-foreground text-xs sm:text-sm mb-2 sm:mb-3 line-clamp-2 break-words">
                   {app.tagline}
                 </p>
                 
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex flex-wrap items-center gap-2 mb-2">
                   <Badge variant="secondary" className="text-xs">
                     {app.category}
                   </Badge>
@@ -74,11 +81,13 @@ export const AppCard = ({ app, onVote, isVoting }: AppCardProps) => {
               </div>
 
               {/* Vote Button */}
-              <VoteButton
-                voteCount={app.vote_count}
-                onVote={() => onVote(app.id)}
-                isVoting={isVoting}
-              />
+              <div className="w-full sm:w-auto flex justify-center sm:block">
+                <VoteButton
+                  voteCount={app.vote_count}
+                  onVote={() => onVote(app.id)}
+                  isVoting={isVoting}
+                />
+              </div>
             </div>
           </div>
         </div>

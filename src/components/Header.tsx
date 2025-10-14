@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import newLogo from "@/assets/logo-updated.png";
 import { useState } from "react";
+import { NewsletterModal } from "@/components/NewsletterModal";
 
 export const Header = () => {
   const { user, signOut, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [newsletterOpen, setNewsletterOpen] = useState(false);
 
   const handleSignOut = () => {
     signOut();
@@ -45,12 +47,12 @@ export const Header = () => {
             >
               Blog
             </Link>
-            <Link
-              to="/submit"
+            <button
+              onClick={() => setNewsletterOpen(true)}
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
-              Submit App
-            </Link>
+              Newsletter
+            </button>
           </nav>
 
           {/* Actions */}
@@ -127,13 +129,15 @@ export const Header = () => {
                 >
                   Blog
                 </Link>
-                <Link
-                  to="/submit"
-                  className="text-foreground hover:text-primary transition-colors font-medium py-2"
-                  onClick={() => setIsOpen(false)}
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    setNewsletterOpen(true);
+                  }}
+                  className="text-foreground hover:text-primary transition-colors font-medium py-2 text-left"
                 >
-                  Submit App
-                </Link>
+                  Newsletter
+                </button>
                 {!loading && !user && (
                   <Link
                     to="/auth"
@@ -148,6 +152,7 @@ export const Header = () => {
           </Sheet>
         </div>
       </div>
+      <NewsletterModal open={newsletterOpen} onOpenChange={setNewsletterOpen} />
     </header>
   );
 };
