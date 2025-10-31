@@ -20,17 +20,20 @@ interface AppCardProps {
   app: App;
   onVote: (appId: string) => void;
   isVoting: boolean;
+  isFeatured?: boolean;
 }
 
-export const AppCard = ({ app, onVote, isVoting }: AppCardProps) => {
+export const AppCard = ({ app, onVote, isVoting, isFeatured = false }: AppCardProps) => {
   return (
     <Card className="group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 relative">
       {/* Featured Badge */}
-      <div className="absolute top-3 left-3 z-10">
-        <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
-          Featured
-        </Badge>
-      </div>
+      {isFeatured && (
+        <div className="absolute top-3 left-3 z-10">
+          <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
+            Featured
+          </Badge>
+        </div>
+      )}
 
       <CardContent className="p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
