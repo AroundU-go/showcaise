@@ -179,7 +179,7 @@ export default function Home() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Showcaise - AI Apps Directory | Discover Best AI Tools" />
         <meta name="twitter:description" content="Find and discover the best AI tools and latest AI applications in one place." />
-        <link rel="canonical" href="https://showcaise.com" />
+        <link rel="canonical" href="https://www.showcaise.online/" />
       </Helmet>
       
       <div className="min-h-screen bg-gradient-subtle">
