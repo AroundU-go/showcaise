@@ -75,7 +75,17 @@ export default function Home() {
       const { data, error } = await query;
 
       if (error) throw error;
-      setApps(data || []);
+      
+      // Reorder apps: bring second row (index 3-5) to top
+      const reorderedApps = data || [];
+      if (reorderedApps.length > 6) {
+        const secondRow = reorderedApps.slice(3, 6);
+        const firstRow = reorderedApps.slice(0, 3);
+        const rest = reorderedApps.slice(6);
+        setApps([...secondRow, ...firstRow, ...rest]);
+      } else {
+        setApps(reorderedApps);
+      }
     } catch (error) {
       console.error("Error fetching apps:", error);
       toast({
@@ -242,7 +252,7 @@ export default function Home() {
                 app={app}
                 onVote={handleVote}
                 isVoting={votingApps.has(app.id)}
-                isFeatured={index < 6}
+                isFeatured={index >= 3 && index < 6}
               />
             ))}
           </div>
