@@ -252,7 +252,7 @@ export default function Home() {
                 app={app}
                 onVote={handleVote}
                 isVoting={votingApps.has(app.id)}
-                isFeatured={index >= 3 && index < 6}
+                isFeatured={false}
               />
             ))}
           </div>
