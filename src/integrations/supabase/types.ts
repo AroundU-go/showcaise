@@ -218,10 +218,7 @@ export type Database = {
         Args: { app_uuid: string; user_ip: string }
         Returns: boolean
       }
-      increment_vote_count: {
-        Args: { app_uuid: string }
-        Returns: undefined
-      }
+      increment_vote_count: { Args: { app_uuid: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
