@@ -208,12 +208,17 @@ export default function Home() {
               <br />
               — get 100's of new discoveries while you sleep
             </p>
-            {/* Sign in button for small devices only when not logged in */}
+            {/* Sign in and Submit buttons for small devices only when not logged in */}
             {!user && (
-              <div className="md:hidden flex justify-center">
+              <div className="md:hidden flex flex-col sm:flex-row gap-3 justify-center items-center mt-8">
                 <Link to="/auth">
-                  <Button variant="outline" className="px-6 py-2">
+                  <Button variant="outline" className="px-6 py-2 w-full sm:w-auto">
                     Sign In
+                  </Button>
+                </Link>
+                <Link to="/submit">
+                  <Button className="bg-gradient-primary hover:shadow-glow transition-all px-6 py-2 w-full sm:w-auto">
+                    Submit App
                   </Button>
                 </Link>
               </div>

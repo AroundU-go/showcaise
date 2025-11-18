@@ -91,16 +91,15 @@ export const Header = () => {
               </>
             ) : (
               <>
-                <Link to="/auth">
-                  <Button variant="outline" size="sm" className="md:size-default">
+                <Link to="/auth" className="hidden md:block">
+                  <Button variant="outline">
                     Sign In
                   </Button>
                 </Link>
-                <Link to="/submit">
-                  <Button size="sm" className="bg-gradient-primary hover:shadow-glow transition-all md:size-default">
-                    <Plus className="w-4 h-4 mr-2 hidden sm:inline" />
-                    <span className="hidden sm:inline">Submit App</span>
-                    <span className="sm:hidden">Submit</span>
+                <Link to="/submit" className="hidden md:block">
+                  <Button className="bg-gradient-primary hover:shadow-glow transition-all">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Submit App
                   </Button>
                 </Link>
               </>
